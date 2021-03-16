@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="log4net.config" />
+    <None Remove="SampleFiles\sample-aba-file-02.aba" />
+    <None Remove="SampleFiles\sample-aba-file-badchars.aba" />
+    <None Remove="SampleFiles\sample-aba-file-empty.aba" />
+    <None Remove="SampleFiles\sample-aba-file-invalidchars-01.aba" />
+    <None Remove="SampleFiles\sample-aba-file-invalidchars-02.aba" />
+    <None Remove="SampleFiles\sample-aba-file-invalidchars-03.aba" />
+    <None Remove="SampleFiles\sample-aba-file-missingdescriptive.aba" />
+    <None Remove="SampleFiles\sample-aba-file-missingdetail.aba" />
+    <None Remove="SampleFiles\sample-aba-file-missingtotals.aba" />
+    <None Remove="SampleFiles\sample-aba-file-valid-01.aba" />
+    <None Remove="SampleFiles\sample-aba-file-valid-02.aba" />
+    <None Remove="SampleFiles\sample-aba-file-valid.aba" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\sample-aba-file-badchars.aba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\sample-aba-file-empty.aba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\sample-aba-file-missingdescriptive.aba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\sample-aba-file-missingdetail.aba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\sample-aba-file-missingtotals.aba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\sample-aba-file-valid-01.aba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\sample-aba-file-valid-02.aba">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Canary.Core\Canary.Core.csproj" />
+  </ItemGroup>
+
+</Project>

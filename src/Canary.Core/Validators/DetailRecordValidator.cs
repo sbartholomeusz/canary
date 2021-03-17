@@ -10,12 +10,12 @@ namespace Canary.Core.Validators
 {
     public static class DetailRecordValidator
     {
-        static int FIXED_REC_LENGTH = 119; // excluding Record Type indicator field (1 char)
+        static readonly int FIXED_REC_LENGTH = 119; // excluding Record Type indicator field (1 char)
 
-        static string WITHHOLDING_TAX_INDICATOR_PATTERN = @"^[ NWXY]+$";  // TODO: Remove hardcoded values, should be stored in config
-        static string TRANSACTION_CODE_PATTERN = @"^(13|50|51|52|53|54|55|56|57)$";   // TODO: Remove hardcoded values, should be stored in config
-        static string VALID_CHARS_PATTERN = CommonValidationRoutines.VALID_CHARS_PATTERN;
-        static ILogger _logger;
+        static readonly string WITHHOLDING_TAX_INDICATOR_PATTERN = @"^[ NWXY]+$";  // TODO: Remove hardcoded values, should be stored in config
+        static readonly string TRANSACTION_CODE_PATTERN = @"^(13|50|51|52|53|54|55|56|57)$";   // TODO: Remove hardcoded values, should be stored in config
+        static readonly string VALID_CHARS_PATTERN = CommonValidationRoutines.VALID_CHARS_PATTERN;
+        static readonly ILogger _logger;
 
         static DetailRecordValidator()
         {

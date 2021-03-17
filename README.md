@@ -11,12 +11,32 @@ The application is written using C# .NET Core 3.1, with a WPF user interface.
 [MIT Licence](http://en.wikipedia.org/wiki/MIT_License)
 
 ## Solution Structure
-* Canary.Core - Contains core validation logic.
-* Canary.Form - User interface layer consisting of a WPF form.
-* Canary.Logging - Application logging layer leveraging Log4Net.
-* Canary.Tests - Unit tests layer
+* <u>Canary.Core</u> - Contains core validation logic.
+* <u>Canary.Form</u> - User interface layer consisting of a WPF form.
+* <u>Canary.Logging</u> - Application logging layer leveraging Log4Net.
+* <u>Canary.Tests</u> - Unit tests layer
 
 ![Solution Dependency Map](/docs/canary-solution-codemap.png?raw=true "Solution Structure")
+
+## Getting Started
+1. Clone the repo
+```console
+git clone https://github.com/sbartholomeusz/canary
+```
+<br />
+
+2. Build the solution
+```console
+cd canary\src\
+dotnet build
+```
+<br />
+
+3. Launch the WPF form
+```console
+Canary.Form\bin\Debug\netcoreapp3.1\Canary.Form.exe
+```
+<br />
 
 ## Dependencies
 * [MahApps](https://mahapps.com/docs/guides/quick-start) - WPF application theming

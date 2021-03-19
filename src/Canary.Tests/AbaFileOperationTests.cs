@@ -28,7 +28,7 @@ namespace Canary.Tests
                 // Assert
                 Assert.True(errors.Count == 0);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -51,7 +51,7 @@ namespace Canary.Tests
                 // Assert
                 Assert.True(errors.Count == 0);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -78,7 +78,7 @@ namespace Canary.Tests
                 // Assert
                 Assert.True(errors.Count > 0);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -105,7 +105,7 @@ namespace Canary.Tests
                 // Assert
                 Assert.True(errors.Count > 0);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -132,7 +132,7 @@ namespace Canary.Tests
                 // Assert
                 Assert.True(errors.Count == 1);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -159,7 +159,7 @@ namespace Canary.Tests
                 // Assert
                 Assert.True(errors.Count == 4);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -186,7 +186,7 @@ namespace Canary.Tests
                 // Assert
                 Assert.True(errors.Count == 10);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

@@ -34,7 +34,7 @@ dotnet build
 
 3. Launch the WPF form
 ```console
-Canary.Form\bin\Debug\netcoreapp3.1\Canary.Form.exe
+Canary.Form\bin\Debug\netcoreapp3.1\Canary.exe
 ```
 <br />
 

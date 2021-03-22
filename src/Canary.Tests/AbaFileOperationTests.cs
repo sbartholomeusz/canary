@@ -103,7 +103,7 @@ namespace Canary.Tests
                 s.Close();
 
                 // Assert
-                Assert.True(errors.Count > 0);
+                Assert.True(errors.Count < 0);
             }
             catch (Exception)
             {

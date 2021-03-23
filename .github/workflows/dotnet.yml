@@ -1,4 +1,4 @@
-name: Run Tests
+name: dotnet-unit-tests
 
 on:
   push:

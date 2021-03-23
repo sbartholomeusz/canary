@@ -1,4 +1,5 @@
 # Canary - ABA Cemtext Bank File Validator
+[![Unit Test Action status](https://github.com/sbartholomeusz/canary/workflows/dotnet-unit-tests/badge.svg)](https://github.com/sbartholomeusz/canary/actions)
 
 ## Overview
 Canary is a small Windows desktop application for validating bank files in the Australian Bankers Association (ABA) format (aka Cemtext).

@@ -10,9 +10,9 @@ namespace Canary.Core.Validators
 {
     public static class DescriptiveRecordValidator
     {
-        static string VALID_CHARS_PATTERN = CommonValidationRoutines.VALID_CHARS_PATTERN;
-        static int FIXED_REC_LENGTH = 119; // excluding Record Type indicator field (1 char)
-        static ILogger _logger;
+        static readonly string VALID_CHARS_PATTERN = CommonValidationRoutines.VALID_CHARS_PATTERN;
+        static readonly int FIXED_REC_LENGTH = 119; // excluding Record Type indicator field (1 char)
+        static readonly ILogger _logger;
 
         static DescriptiveRecordValidator()
         {

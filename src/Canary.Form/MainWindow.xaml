@@ -24,7 +24,7 @@
             </ListView.View>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <EventSetter Event="Selected" Handler="lvwResults_OnMouseLeftButtonDown"/>
+                    <EventSetter Event="Selected" Handler="LvwResults_OnMouseLeftButtonDown"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding HighlightThisRecord}" Value="True">
                             <Setter Property="Background" Value="Red" />

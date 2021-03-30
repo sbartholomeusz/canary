@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Canary.Core\Canary.Core.csproj" />
-    <ProjectReference Include="..\Canary.Logging\Canary.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>

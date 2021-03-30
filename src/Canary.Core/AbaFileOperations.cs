@@ -15,7 +15,7 @@ namespace Canary.Core
     {
         // TODO: Should this class be made static?
 
-        private ILogger _logger = null;
+        private readonly ILogger _logger = null;
         private enum RecordType
         {
             Descriptive = 0,
@@ -112,22 +112,13 @@ namespace Canary.Core
         {
             RecordType? recType = null;
 
-            switch (record.Substring(0,1))
+            recType = record.Substring(0, 1) switch
             {
-                case "0":
-                    recType = RecordType.Descriptive;
-                    break;
-                case "1":
-                    recType = RecordType.Detail;
-                    break;
-                case "7":
-                    recType = RecordType.FileTotal;
-                    break;
-                default:
-                    recType = RecordType.Unknown;
-                    break;
-            }
-
+                "0" => RecordType.Descriptive,
+                "1" => RecordType.Detail,
+                "7" => RecordType.FileTotal,
+                _ => RecordType.Unknown,
+            };
             return recType;
         }
 

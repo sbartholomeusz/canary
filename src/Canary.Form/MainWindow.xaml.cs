@@ -26,8 +26,7 @@ namespace Canary.Form
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private ILogger _logger = null;
-        private List<ValidationError> _errors = new List<ValidationError>();
+        private readonly ILogger _logger = null;
 
         public MainWindow()
         {
@@ -74,12 +73,11 @@ namespace Canary.Form
             StopProgressBarAnimation();
         }
 
-        private void lvwResults_OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void LvwResults_OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             _logger.Info("lvwResults_OnMouseLeftButtonDown Start");
 
-            var item = sender as ListViewItem;
-            if (item != null && item.IsSelected)
+            if (sender is ListViewItem item && item.IsSelected)
             {
                 // Validation message may/may not pertain to a specific line
                 var selectedLineNumber = int.TryParse((((FileValidationMessage)item.Content).LineNumber), out var outVal) ? (int?)outVal : null;
@@ -87,9 +85,9 @@ namespace Canary.Form
                 if (!selectedLineNumber.HasValue) return;
 
                 // Select the matching line in the records list view
-                for (int i=0; i<lvwRecords.Items.Count; i++)
+                for (int i = 0; i < lvwRecords.Items.Count; i++)
                 {
-                    if (lvwRecords.Items[i] is FileRecord && ((FileRecord)lvwRecords.Items[i]).LineNumber == selectedLineNumber)
+                    if (lvwRecords.Items[i] is FileRecord rec && rec.LineNumber == selectedLineNumber)
                     {
                         lvwRecords.SelectedIndex = i;
                         break;
@@ -178,7 +176,7 @@ namespace Canary.Form
 
                         // Highlight if validation errors logged for this record
                         var errorsForThisRec = validationMessages.Where(i => i.LineNumber == lineNumber.ToString()).ToList();
-                        var highlightThisRec = errorsForThisRec.Count() > 0 ? true : false;
+                        var highlightThisRec = errorsForThisRec.Count() > 0;
 
                         fileContents.Add(new FileRecord() { LineNumber=lineNumber, Record=sr.ReadLine(), HighlightThisRecord=highlightThisRec });
                     }

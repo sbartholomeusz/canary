@@ -2,11 +2,16 @@
 [![Unit Test Action status](https://github.com/sbartholomeusz/canary/workflows/dotnet-unit-tests/badge.svg)](https://github.com/sbartholomeusz/canary/actions)
 
 ## Overview
-Canary is a small Windows desktop application for validating bank files in the Australian Bankers Association (ABA) format (aka Cemtext).
+Canary is a small utility for validating bank files in the Australian Bankers Association (ABA) format (aka Cemtext).
 
-The application is written using C# .NET Core 3.1, and WPF.
+The application is accessible using either of the following clients:
+<br/>
 
-![WPF App Screenshot](/docs/screenshot.png?raw=true "")
+* <b>Windows WPF desktop application</b>: The application is written using C# .NET Core 3.1, and WPF.
+![WPF App Screenshot](/docs/wpf-screenshot.png?raw=true "")
+
+* <b>Web application</b>: The web client is written using Blazor Web Assembly.
+![WASM App Screenshot](/docs/blazor-web-screenshot.png?raw=true "")
 
 ## License
 [MIT Licence](http://en.wikipedia.org/wiki/MIT_License)

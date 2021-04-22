@@ -1,0 +1,81 @@
+﻿@using System.IO;
+@using Canary.Web.Services;
+
+@page "/"
+
+@inject FileReaderService fileReader;
+
+<header class="jumbotron text-center">
+    <div class="row py-lg-2">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">ABA Bank File Validation Service</h1>
+        </div>
+        <div class="lead text-muted pt-3">Welcome to the Canary ABA bank file validation service. Please select the bank file you wish to validate.</div>
+    </div>
+</header>
+
+<FileSelectionPanel OnValidateBtnClick="ValidateFileBtnHandler" />
+
+@if (showResults)
+{
+    <hr />
+
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <ResultsPanel ValidationMessagesToDisplay="@validationMessages" OnClickResult="@OnClickResultHandler" />
+                </div>
+                <div class="col-6">
+                    <FileViewer FileContents="@fileContents" LineNumberToHighlight="@lineNumberToHighlight" />
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+
+
+@code {
+
+    // Variables
+    private List<AbaFileValidationMessage> validationMessages { get; set; }
+    private List<FileRecord> fileContents { get; set; }
+    private int lineNumberToHighlight { get; set; }
+    private Boolean showResults;
+
+
+    // Methods
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        validationMessages = new List<AbaFileValidationMessage>();
+        showResults = false;
+    }
+
+    void ValidateFileBtnHandler(Stream file)
+    {
+        if (file != null)
+        {
+            using (file)
+            {
+                showResults = true;
+
+                // Validate the bank file
+                validationMessages = AbaFileValidationService.ValidateFile(file);
+
+                // Display file contents
+                // TODO: Create abstraction of FileReaderService.FileRecord
+                file.Position = 0;
+                fileContents = fileReader.GetFileContents(file);
+
+                StateHasChanged();
+            }
+        }
+    }
+
+    void OnClickResultHandler(int LineNumber)
+    {
+        lineNumberToHighlight = LineNumber;
+    }
+}

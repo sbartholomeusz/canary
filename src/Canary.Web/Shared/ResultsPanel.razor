@@ -1,0 +1,60 @@
+﻿@using Canary.Web.Services;
+
+<div class="p-3 border bg-light">Results</div>
+
+<div class="list-group">
+    @if (ValidationMessagesToDisplay != null)
+    {
+        @foreach (var msg in ValidationMessagesToDisplay)
+        {
+            string lineNum = msg.LineNumber.HasValue ? msg.LineNumber.Value.ToString() : "N/A";
+
+            <a @onclick="(() => RowClickHandler(msg.LineNumber))" class="list-group-item list-group-item-action" data-bs-toggle="list" href="#">
+                @msg.Message
+
+                <br/>
+
+                @* Message Type badge *@
+                @if (msg.Type == AbaFileValidationMessage.MessageTypes.Information)
+                {
+                    <span class="badge bg-info rounded-pill">Type: Info</span>
+                }
+                else if (msg.Type == AbaFileValidationMessage.MessageTypes.Warning)
+                {
+                    <span class="badge bg-warning rounded-pill">Type: Warn</span>
+                }
+                else if (msg.Type == AbaFileValidationMessage.MessageTypes.Error)
+                {
+                    <span class="badge bg-danger rounded-pill">Type: Error</span>
+                }
+
+                @* Line Number badge *@
+                <span class="badge bg-secondary rounded-pill">Line: @lineNum</span>
+            </a>
+        }
+    }
+</div>
+
+@code {
+
+    // Parameters
+    [Parameter]
+    public List<AbaFileValidationMessage> ValidationMessagesToDisplay { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnClickResult { get; set; }
+
+
+    // Methods
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ValidationMessagesToDisplay = new List<AbaFileValidationMessage>();
+    }
+
+    async Task RowClickHandler(int? relatedLineNumber)
+    {
+        if (relatedLineNumber.HasValue)
+            await OnClickResult.InvokeAsync((int)relatedLineNumber);
+    }
+}

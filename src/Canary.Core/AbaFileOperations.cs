@@ -13,8 +13,6 @@ namespace Canary.Core
 {
     public class AbaFileOperations
     {
-        // TODO: Should this class be made static?
-
         private readonly ILogger _logger = null;
         private enum RecordType
         {
@@ -23,9 +21,6 @@ namespace Canary.Core
             FileTotal = 7,
             Unknown = 99
         }
-
-        public AbaFileOperations() : this(new Logger())
-        { }
 
         public AbaFileOperations(ILogger logger)
         {
@@ -47,7 +42,7 @@ namespace Canary.Core
                 _logger.Info("ValidateFile: Processing ...");
 
                 _logger.Info("ValidateFile: Parsing records ...");
-                recs = ParseRecords(s);
+                recs = ParseRecords(s); // Don't close stream, let the calling client do it
 
                 _logger.Info($"ValidateFile: Found {recs.Where(i => i.Type == IRecord.RecordType.Descriptive).Count()} Descriptive Records");
                 _logger.Info($"ValidateFile: Found {recs.Where(i => i.Type == IRecord.RecordType.Detail).Count()} Detail Records");
@@ -71,37 +66,38 @@ namespace Canary.Core
             var recs = new List<IRecord>();
 
             _logger.Info("ParseRecords: Reading stream ...");
-            using (StreamReader sr = new StreamReader(s))
+
+            // Let the calling client close the stream
+            StreamReader sr = new StreamReader(s);
+            
+            var lineNumber = 0;
+            while (!sr.EndOfStream)
             {
-                var lineNumber = 0;
-                while (!sr.EndOfStream)
+                // Read each line from file
+                lineNumber++;
+                string rawRec = sr.ReadLine();
+
+                // Validate line
+                var recType = GetRecordType(rawRec);
+
+                switch (recType)
                 {
-                    // Read each line from file
-                    lineNumber++;
-                    string rawRec = sr.ReadLine();
+                    case RecordType.Descriptive:
+                        recs.Add(new DescriptiveRecord(rawRec, lineNumber.ToString()));
+                        break;
 
-                    // Validate line
-                    var recType = GetRecordType(rawRec);
+                    case RecordType.Detail:
+                        recs.Add(new DetailRecord(rawRec, lineNumber.ToString()));
+                        break;
 
-                    switch (recType)
-                    {
-                        case RecordType.Descriptive:
-                            recs.Add(new DescriptiveRecord(rawRec, lineNumber.ToString()));
-                            break;
+                    case RecordType.FileTotal:
+                        recs.Add(new FileTotalRecord(rawRec, lineNumber.ToString()));
+                        break;
 
-                        case RecordType.Detail:
-                            recs.Add(new DetailRecord(rawRec, lineNumber.ToString()));
-                            break;
-
-                        case RecordType.FileTotal:
-                            recs.Add(new FileTotalRecord(rawRec, lineNumber.ToString()));
-                            break;
-
-                        default:
-                            _logger.Error($"ParseRecords: Found unexpected Record Type - '{rawRec}'");
-                            recs.Add(new UnknownRecord(rawRec, lineNumber.ToString()));
-                            break;
-                    }
+                    default:
+                        _logger.Error($"ParseRecords: Found unexpected Record Type - '{rawRec}'");
+                        recs.Add(new UnknownRecord(rawRec, lineNumber.ToString()));
+                        break;
                 }
             }
 
@@ -128,7 +124,7 @@ namespace Canary.Core
             var descriptiveRecs = recs.Where(i => i.Type == IRecord.RecordType.Descriptive).ToList().Cast<DescriptiveRecord>();
             var detailRecs = recs.Where(i => i.Type == IRecord.RecordType.Detail).ToList().Cast<DetailRecord>();
             var fileTotalRecs = recs.Where(i => i.Type == IRecord.RecordType.FileTotal).ToList().Cast<FileTotalRecord>();
-            var errors = new List<ValidationMessage>();
+            var outputMessages = new List<ValidationMessage>();
 
             try
             {
@@ -141,14 +137,14 @@ namespace Canary.Core
                 _logger.Info($"ValidateRecords: Validating Descriptive records ...");
                 foreach (var descriptiveRec in descriptiveRecs)
                 {
-                    errors.AddRange(DescriptiveRecordValidator.Validate((DescriptiveRecord)descriptiveRec));
+                    outputMessages.AddRange(new DescriptiveRecordValidator(_logger).Validate((DescriptiveRecord)descriptiveRec));
                 }
 
                 // Check detail records
                 _logger.Info($"ValidateRecords: Validating Detail records ...");
                 foreach (var detailRec in detailRecs)
                 {
-                    errors.AddRange(DetailRecordValidator.Validate((DetailRecord)detailRec));
+                    outputMessages.AddRange(new DetailRecordValidator(_logger).Validate((DetailRecord)detailRec));
                 }
 
                 // Check file total records
@@ -168,7 +164,7 @@ namespace Canary.Core
 
                 foreach (var fileTotalRec in fileTotalRecs)
                 {
-                    errors.AddRange(FileTotalRecordValidator.Validate((FileTotalRecord)fileTotalRec, netTotalAmount, creditTotalAmount, debitTotalAmount, detailRecordCount));
+                    outputMessages.AddRange(new FileTotalRecordValidator(_logger).Validate((FileTotalRecord)fileTotalRec, netTotalAmount, creditTotalAmount, debitTotalAmount, detailRecordCount));
                 }
 
 
@@ -178,48 +174,61 @@ namespace Canary.Core
                 _logger.Info($"ValidateRecords: Performing file level checks ...");
                 if (orderedRecs.Count() < 3)
                 {
-                    errors.Add(new ValidationMessage() { Message = $"File must contain at least 3 records. Found {orderedRecs.Count()} records." });
+                    outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Error, Message = $"File must contain at least 3 records. Found {orderedRecs.Count()} records." });
                 }
                 else
                 {
                     if (descriptiveRecs.Count() != 1)
                     {
-                        errors.Add(new ValidationMessage() { Message = $"File must only contain 1 descriptive record. Found {descriptiveRecs.Count()} records." });
+                        outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Error, Message = $"File must only contain 1 descriptive record. Found {descriptiveRecs.Count()} records." });
                     }
 
                     if (detailRecs.Count() < 1)
                     {
-                        errors.Add(new ValidationMessage() { Message = $"File must contain at least 1 detail record. Found {detailRecs.Count()} records." });
+                        outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Error, Message = $"File must contain at least 1 detail record. Found {detailRecs.Count()} records." });
                     }
 
                     if (fileTotalRecs.Count() != 1)
                     {
-                        errors.Add(new ValidationMessage() { Message = $"File must only contain 1 file total record. Found {fileTotalRecs.Count()} records." });
+                        outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Error, Message = $"File must only contain 1 file total record. Found {fileTotalRecs.Count()} records." });
                     }
 
                     if (orderedRecs.First().Type != IRecord.RecordType.Descriptive)
                     {
-                        errors.Add(new ValidationMessage() { Message = "First record must be a descriptive record" });
+                        outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Error, Message = "First record must be a descriptive record" });
                     }
 
                     if (orderedRecs.Last().Type != IRecord.RecordType.FileTotal)
                     {
-                        errors.Add(new ValidationMessage() { Message = "Last record must be a file total record" });
+                        outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Error, Message = "Last record must be a file total record" });
                     }
                 }
                 //
 
-                _logger.Info($"ValidateRecords: Found {errors.Count} issues.");
+                var infoMsgCount = outputMessages.Where(x => x.Type == ValidationMessage.MessageTypes.Information).Count();
+                var warningMsgCount = outputMessages.Where(x => x.Type == ValidationMessage.MessageTypes.Warning).Count();
+                var errorMsgCount = outputMessages.Where(x => x.Type == ValidationMessage.MessageTypes.Error).Count();
+
+                if (errorMsgCount < 1 & warningMsgCount < 1)
+                {
+                    outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Information, Message = "No issues found" });
+                }
+
+                _logger.Info("**********************************************************");
+                _logger.Info($"ValidateRecords: {infoMsgCount} errors.");
+                _logger.Info($"ValidateRecords: {warningMsgCount} warnings.");
+                _logger.Info($"ValidateRecords: {errorMsgCount} informational messages.");
+                _logger.Info("**********************************************************");
             }
             catch (Exception e)
             {
-                errors.Add(new ValidationMessage() { Message="Unable to validate file. An unexpected error occured while validating the file."});
-                _logger.Error($"ValidateRecords: Unable to validate file. An unexpected error occured while validating the file.");
+                outputMessages.Add(new ValidationMessage() { Type = ValidationMessage.MessageTypes.Error, Message ="Unable to validate file. An unexpected error occurred while validating the file."});
+                _logger.Error($"ValidateRecords: Unable to validate file. An unexpected error occurred while validating the file.");
                 _logger.Error(e);
                 throw;
             }
 
-            return errors;
+            return outputMessages;
         }
     }
 }

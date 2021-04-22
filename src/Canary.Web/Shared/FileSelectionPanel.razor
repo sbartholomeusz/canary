@@ -1,0 +1,63 @@
+﻿@using System.IO;
+
+<section class="text-center container p-3">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <!-- File upload element -->
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <InputFile class="form-control mb-4" OnChange="InputFileOnChange" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="btn @(FileHasBeenSelected() ? "btn-primary" : "btn-secondary disabled")" @onclick="ValidateButtonClicked">Validate</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+
+    // Variables
+    IFileListEntry selectedFile;
+
+    // Parameters
+    [Parameter]
+    public EventCallback<Stream> OnValidateBtnClick { get; set; }
+
+
+    // Methods
+    void InputFileOnChange(IFileListEntry[] files)
+    {
+        selectedFile = files.FirstOrDefault();
+    }
+
+    Boolean FileHasBeenSelected()
+    {
+        return selectedFile != null;
+    }
+
+    async Task ValidateButtonClicked()
+    {
+        if (selectedFile != null && selectedFile.Data != null)
+        {
+            // TODO: Consolidate the duplicate file reading logic
+            using (var reader = new StreamReader(selectedFile.Data))
+            {
+                // Workaround: Synchronous reads are not supported issue
+                // Copy stream into memory
+                // As per https://stackoverflow.com/a/58846545
+                var ms = new MemoryStream();
+                await reader.BaseStream.CopyToAsync(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                // Disable the validate button
+                selectedFile = null;
+
+                await OnValidateBtnClick.InvokeAsync(ms);
+            }
+        }
+    }
+}

@@ -31,7 +31,7 @@ namespace Canary.Form
         public MainWindow()
         {
             InitializeComponent();
-            _logger = new Logger();
+            _logger = new Log4NetLogger();
         }
 
         #region Form Event Handlers
@@ -133,21 +133,35 @@ namespace Canary.Form
                 _logger.Info("ValidateFile: Beginning file validation ...");
 
                 // Validate file
-                var tempValidationMessages = new AbaFileOperations().ValidateFile(new StreamReader(fileName).BaseStream);
+                var tempValidationMessages = new AbaFileOperations(new Log4NetLogger()).ValidateFile(new StreamReader(fileName).BaseStream);
                 _logger.Info($"ValidateFile: Found {tempValidationMessages.Count()} validation issues");
 
+                // Display output messages on form
                 foreach (var tempValidationMessage in tempValidationMessages)
                 {
                     var lineNumString = tempValidationMessage.LineNumber.HasValue ? tempValidationMessage.LineNumber.ToString() : NO_LINE_NUM;
-                    fileValidationMessages.Add(new FileValidationMessage() { LineNumber = lineNumString, Message = tempValidationMessage.Message });
-                }
 
-                if (fileValidationMessages.Count() < 1)
-                {
-                    fileValidationMessages.Add(new FileValidationMessage() { LineNumber = NO_LINE_NUM, Message = "No issues found" });
+                    string type; 
+                    switch (tempValidationMessage.Type)
+                    {
+                        case ValidationMessage.MessageTypes.Information:
+                            type = "Info";
+                            break;
+                        case ValidationMessage.MessageTypes.Warning:
+                            type = "Warning";
+                            break;
+                        case ValidationMessage.MessageTypes.Error:
+                            type = "Error";
+                            break;
+                        default:
+                            type = ""; // Should never happen
+                            break;
+                    }
+                    fileValidationMessages.Add(new FileValidationMessage() { Type = type, LineNumber = lineNumString, Message = tempValidationMessage.Message });
                 }
 
                 lvwResults.ItemsSource = fileValidationMessages.OrderBy(i => i.LineNumber);
+                //
             }
             catch (Exception e)
             {
@@ -165,6 +179,7 @@ namespace Canary.Form
 
             try
             {
+                // TODO: Should consolidate with FileReaderService.cs
                 _logger.Info("PopulateFormWithFileRecords: Reading file ...");
                 using (StreamReader sr = new StreamReader(s))
                 {
@@ -216,6 +231,8 @@ namespace Canary.Form
 
     public class FileValidationMessage
     {
+
+        public string Type { get; set; }
         public string LineNumber { get; set; }
         public string Message { get; set; }
 

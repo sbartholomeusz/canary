@@ -1,7 +1,9 @@
 ﻿using Canary.Core.Model;
 using Canary.Core.Validators;
+using Canary.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -22,10 +24,17 @@ namespace Canary.Tests
             var actualDetailRecordCount = 4;
 
             // Act
-            var errors = FileTotalRecordValidator.Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+            var results = new FileTotalRecordValidator(new ConsoleLogger()).Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+
+            var informationalCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Information).Count();
+            var warningCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Warning).Count();
+            var errorCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Error).Count();
 
             // Assert
-            Assert.True(errors.Count == 0);
+            Assert.True(results.Count == (informationalCount + warningCount + errorCount));
+            Assert.True(informationalCount == 0);
+            Assert.True(warningCount == 0);
+            Assert.True(errorCount == 0);
         }
 
         [Fact]
@@ -41,10 +50,17 @@ namespace Canary.Tests
             var actualDetailRecordCount = 4;
 
             // Act
-            var errors = FileTotalRecordValidator.Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+            var results = new FileTotalRecordValidator(new ConsoleLogger()).Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+
+            var informationalCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Information).Count();
+            var warningCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Warning).Count();
+            var errorCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Error).Count();
 
             // Assert
-            Assert.True(errors.Count == 0);
+            Assert.True(results.Count == (informationalCount + warningCount + errorCount));
+            Assert.True(informationalCount == 0);
+            Assert.True(warningCount == 0);
+            Assert.True(errorCount == 0);
         }
 
         [Fact]
@@ -64,10 +80,17 @@ namespace Canary.Tests
             var actualDetailRecordCount = 4;
 
             // Act
-            var errors = FileTotalRecordValidator.Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+            var results = new FileTotalRecordValidator(new ConsoleLogger()).Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+
+            var informationalCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Information).Count();
+            var warningCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Warning).Count();
+            var errorCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Error).Count();
 
             // Assert
-            Assert.True(errors.Count == 1);
+            Assert.True(results.Count == (informationalCount + warningCount + errorCount));
+            Assert.True(informationalCount == 0);
+            Assert.True(warningCount == 0);
+            Assert.True(errorCount == 1);
         }
 
         [Fact]
@@ -87,10 +110,17 @@ namespace Canary.Tests
             var actualDetailRecordCount = 3;
 
             // Act
-            var errors = FileTotalRecordValidator.Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+            var results = new FileTotalRecordValidator(new ConsoleLogger()).Validate(rec, actualNetTotalAmt, actualCreditTotalAmt, actualDebitTotalAmt, actualDetailRecordCount);
+
+            var informationalCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Information).Count();
+            var warningCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Warning).Count();
+            var errorCount = results.Where(x => x.Type == ValidationMessage.MessageTypes.Error).Count();
 
             // Assert
-            Assert.True(errors.Count == 1);
+            Assert.True(results.Count == (informationalCount + warningCount + errorCount));
+            Assert.True(informationalCount == 0);
+            Assert.True(warningCount == 0);
+            Assert.True(errorCount == 1);
         }
     }
 }

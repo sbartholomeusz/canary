@@ -18,6 +18,7 @@
         <ListView x:Name="lvwResults" Margin="27,132,649,32" BorderThickness="0.5">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Type" Width="75" DisplayMemberBinding="{Binding Type}"/>
                     <GridViewColumn Header="Line Number" Width="100" DisplayMemberBinding="{Binding LineNumber}"/>
                     <GridViewColumn Header="Message" Width="600" DisplayMemberBinding="{Binding Message}"/>
                 </GridView>

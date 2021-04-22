@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Canary</title>
+    <base href="/" />
+
+    <!-- Bootstrap Stuff -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    
+    <link href="css/app.css" rel="stylesheet" />
+</head>
+
+<body>
+    <app>
+        <div class="container centered loading">
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <div class="ps-5">Loading ...</div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <img alt="Loading..." class="" src="img/app_loading.gif">
+                </div>
+            </div>
+        </div>
+    </app>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <!-- Bootstrap Stuff -->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+
+    <!-- Fix bug in BlazorInputFile package - as per http://blog.stevensanderson.com/2019/09/13/blazor-inputfile/ -->
+    <script src="inputfile.js"></script>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>

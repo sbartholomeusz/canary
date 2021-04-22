@@ -7,11 +7,11 @@ using System.Reflection;
 
 namespace Canary.Logging
 {
-    public class Logger : ILogger
+    public class Log4NetLogger : ILogger
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public Logger()
+        public Log4NetLogger()
         {
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));

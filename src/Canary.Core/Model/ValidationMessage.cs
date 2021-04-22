@@ -6,6 +6,14 @@ namespace Canary.Core.Model
 {
     public class ValidationMessage
     {
+        public enum MessageTypes
+        {
+            Information = 0,
+            Warning = 1,
+            Error = 2
+        }
+
+        public MessageTypes Type { get; set; }
         public int? LineNumber { get; set; }
         public string Message { get; set; }
 

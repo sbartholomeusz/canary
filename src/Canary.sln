@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Canary.Tests", "Canary.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Canary.Form", "Canary.Form\Canary.Form.csproj", "{EFF963CD-899F-4399-9700-D1571A28AB1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Canary.Core", "Canary.Core\Canary.Core.csproj", "{19358D6D-6085-4ECB-A07B-E916B2098E86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Canary.Core", "Canary.Core\Canary.Core.csproj", "{19358D6D-6085-4ECB-A07B-E916B2098E86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Canary.Logging", "Canary.Logging\Canary.Logging.csproj", "{DECBF5C0-DD7C-4293-ABD8-A12E2F4CDE6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Canary.Logging", "Canary.Logging\Canary.Logging.csproj", "{DECBF5C0-DD7C-4293-ABD8-A12E2F4CDE6A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Canary.Web", "Canary.Web\Canary.Web.csproj", "{88542BFF-974C-4465-9794-181AC8D22728}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DECBF5C0-DD7C-4293-ABD8-A12E2F4CDE6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DECBF5C0-DD7C-4293-ABD8-A12E2F4CDE6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DECBF5C0-DD7C-4293-ABD8-A12E2F4CDE6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88542BFF-974C-4465-9794-181AC8D22728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88542BFF-974C-4465-9794-181AC8D22728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88542BFF-974C-4465-9794-181AC8D22728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88542BFF-974C-4465-9794-181AC8D22728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -30,14 +30,14 @@ git clone https://github.com/sbartholomeusz/canary
 
 2. Build the solution
 ```console
-cd canary\src\
+cd canary\src\Canary.Form\
 dotnet build --configuration Release
 ```
 <br />
 
 3. Launch the WPF form
 ```console
-Canary.Form\bin\Debug\netcoreapp3.1\Canary.exe
+bin\Release\netcoreapp3.1\Canary.exe
 ```
 <br />
 

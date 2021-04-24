@@ -42,6 +42,10 @@ Canary.Form\bin\Debug\netcoreapp3.1\Canary.exe
 <br />
 
 ## Getting Started - Web Application
+You can access the web application here - https://canary-aba-validator.azurewebsites.net/
+<br/>
+However, if you want to build it and run it yourself, below are the steps to do so.
+
 1. Clone the repo
 ```console
 git clone https://github.com/sbartholomeusz/canary

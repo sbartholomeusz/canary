@@ -1,0 +1,36 @@
+name: dotnet-test
+
+# 
+# Purpose: Run dotnet tests
+#
+
+on:
+  # Run workflow manually
+  workflow_dispatch:
+
+  # PR for any branch
+  pull_request:
+
+  # Staged PR's for any branch
+  merge_group:
+
+  # push on any branch
+  push:
+
+defaults:
+  run:
+    shell: bash
+    working-directory: src
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    uses: sbartholomeusz/gh-actions-common/.github/workflows/dotnet-test.yml@main
+    with:
+      dotnet_version: '3.1.x'
+      path: './src/Canary.sln'
+      os-platform: 'windows-latest'
+    secrets: inherit

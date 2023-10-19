@@ -30,6 +30,6 @@ jobs:
   test:
     uses: sbartholomeusz/gh-actions-common/.github/workflows/dotnet-test.yml@main
     with:
-      dotnet_version: '7.0.x'
+      dotnet_version: '3.1.x'
       path: './src/Canary.sln'
     secrets: inherit

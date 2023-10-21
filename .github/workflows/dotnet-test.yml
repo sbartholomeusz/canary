@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   test:
-    uses: sbartholomeusz/gh-actions-common/.github/workflows/dotnet-test.yml@main
+    uses: sbartholomeusz/gh-actions-common/.github/workflows/dotnet-test.yml@v1
     with:
       dotnet_version: '3.1.x'
       path: './src/Canary.sln'

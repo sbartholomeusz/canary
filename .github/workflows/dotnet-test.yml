@@ -32,5 +32,5 @@ jobs:
     with:
       dotnet_version: '3.1.x'
       path: './src/Canary.sln'
-      os-platform: 'windows-latest'
+      os_platform: 'windows-latest'
     secrets: inherit
